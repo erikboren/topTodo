@@ -1,0 +1,1 @@
+(()=>{console.log("Hello World!");const e=document.createElement("h1");e.textcontent="Hejsan",document.querySelector("body").appendChild(e)})();
