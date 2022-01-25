@@ -9,20 +9,19 @@ const todoDatabase = (function(){
         
         let desc = todoDesc;
         let completed = false;
-        let project = "No Project";
         let todoID = todoIDCounter;
-        let projectID = 0;
+        let projectID = [-1];
         
         todoIDCounter ++;
        
         return{
             name: name,
             date: date,
-            project: project,
             desc: desc,
             completed: completed,
             todoID: todoID,
-            projectID: projectID
+            projectID: projectID,
+            
         };
        };
        
@@ -35,24 +34,58 @@ const todoDatabase = (function(){
         todoArray.push(todo);
     };
 
+    const projectIDFilter = function(projectID){
+        filteredTodoArray = todoArray.filter(todo => todo.projectID.some(projectIDarrayElement => projectIDarrayElement == projectID));
+        return filteredTodoArray;
+    };
+
+    const assignProjectID = function(projectIDToAssign,todoID){
+    
+        if(projectDatabase.projectArray.some(project => project.projectID == projectIDToAssign)){
+            const todoToEdit = todoArray.filter(todo => todo.todoID == todoID)[0];
+           if(todoToEdit.projectID == -1){
+                
+                todoToEdit.projectID = [projectIDToAssign];
+
+           }
+           else{
+                todoToEdit.projectID.push(projectIDToAssign);
+               
+           }
+           
+        }
+        else{
+            console.log("ProjectID not found");
+        }
+    };
+
     return{
         addTodo: addTodo,
-        todoArray:todoArray        
+        todoArray:todoArray,
+        projectIDFilter: projectIDFilter,
+        assignProjectID: assignProjectID        
     };
 
 })();
 
 const projectDatabase = (function(){
+    let projectIDcounter = 0;
     const projectFactory = function(projectName){
         
+        let name = projectName;
+        let projectID = projectIDcounter;
+
+        projectIDcounter ++;
 
 
         const projectTodos = function(){
-
-        }
+        return todoDatabase.projectIDFilter(projectID);
+        };
 
         return{
-            name: projectName,
+            name: name,
+            projectID: projectID,
+            projectTodos: projectTodos
         };
     };
     
@@ -72,7 +105,25 @@ const projectDatabase = (function(){
 
 
 projectDatabase.addProject("Projektet");
+projectDatabase.addProject("Projektet2");
 
-todoDatabase.addTodo("namn","datum","beskrivning");
+todoDatabase.addTodo("namn0","datum0","beskrivning0");
+todoDatabase.addTodo("namn1","datum1","beskrivning1");
+todoDatabase.addTodo("namn2","datum2","beskrivning2");
+todoDatabase.addTodo("namn3","datum3","beskrivning3");
+todoDatabase.addTodo("namn4","datum4","beskrivning4");
+todoDatabase.addTodo("namn5","datum5","beskrivning5");
+todoDatabase.addTodo("namn6","datum6","beskrivning6");
+todoDatabase.addTodo("namn7","datum8","beskrivning9");
 
-console.log(todoDatabase.todoArray[0]);
+
+todoDatabase.assignProjectID(0,5);
+todoDatabase.assignProjectID(0,2);
+todoDatabase.assignProjectID(0,4);
+todoDatabase.assignProjectID(1,4);
+
+
+
+console.table(todoDatabase.todoArray);
+
+console.log(projectDatabase.projectArray[0].projectTodos());

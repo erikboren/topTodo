@@ -1,13 +1,17 @@
 /*jshint esversion: 6 */
 
-const navBarElement = function(){
+const navBarComponentConstructor = function(){
 
 };
 
-const todoNavElement = function(todo){
+const todoNavElementConstructor = function(todo){
 
 };
 
-const projectNavElement = function(project){
+const projectNavElementConstructor = function(project){
+
+};
+
+const mainComponentConstructor = function(){
 
 };
