@@ -4,7 +4,7 @@ import { sideBarComponentConstructor } from './components.js';
 import { mainWindowConstructor } from './components.js';
 import { projectSideBarElementConstructor } from './components.js';
 
-const todoDatabase = (function(){
+const todoDataBase = (function(){
     let todoIDCounter = 0;
     
     const todoFactory = function(todoName,todoDate,todoDesc){
@@ -14,7 +14,7 @@ const todoDatabase = (function(){
         let desc = todoDesc;
         let completed = false;
         let todoID = todoIDCounter;
-        let projectID = [99];
+        let projectID = 0;
         
         todoIDCounter ++;
        
@@ -39,24 +39,15 @@ const todoDatabase = (function(){
     };
 
     const projectIDFilter = function(projectID){
-        filteredTodoArray = todoArray.filter(todo => todo.projectID.some(projectIDarrayElement => projectIDarrayElement == projectID));
+        const filteredTodoArray = todoArray.filter(todo => todo.projectID == projectID);
         return filteredTodoArray;
     };
 
     const assignProjectID = function(projectIDToAssign,todoID){
     
-        if(projectDatabase.projectArray.some(project => project.projectID == projectIDToAssign)){
+        if(projectDataBase.projectArray.some(project => project.projectID == projectIDToAssign)){
             const todoToEdit = todoArray.filter(todo => todo.todoID == todoID)[0];
-           if(todoToEdit.projectID == [99]){
-                
-                todoToEdit.projectID = [projectIDToAssign];
-
-           }
-           else{
-                todoToEdit.projectID.push(projectIDToAssign);
-               
-           }
-           
+            todoToEdit.projectID = projectIDToAssign;
         }
         else{
             console.log("ProjectID not found");
@@ -72,7 +63,7 @@ const todoDatabase = (function(){
 
 })();
 
-const projectDatabase = (function(){
+const projectDataBase = (function(){
     let projectIDcounter = 0;
     
     function sortProjectArray(){
@@ -90,7 +81,7 @@ const projectDatabase = (function(){
 
 
         const projectTodos = function(){
-        return todoDatabase.projectIDFilter(projectID);
+        return todoDataBase.projectIDFilter(projectID);
         };
 
         return{
@@ -109,8 +100,8 @@ const projectDatabase = (function(){
     };
 
     addProject("Tasks not in a project");
-    projectArray[0].projectID = 99;
-    projectIDcounter = 0;
+    // projectArray[0].projectID = 99;
+    // projectIDcounter = 0;
 
 
    return{
@@ -125,14 +116,8 @@ const screenController = (function(){
     
 
     const buildPage = function(){
-        function sideBar(){
-            const sideBar = sideBarComponentConstructor();
-            projectDatabase.projectArray.forEach(project =>{
-                sideBar.appendChild(projectSideBarElementConstructor(project));
-            });
-            return sideBar;
-        }
-        contentDiv.appendChild(sideBar());
+        
+        contentDiv.appendChild(sideBarComponentConstructor(projectDataBase));
         contentDiv.appendChild(mainWindowConstructor());
     };
 
@@ -142,31 +127,29 @@ const screenController = (function(){
 
 })();
 
-projectDatabase.addProject("Projekt1");
-projectDatabase.addProject("Projekt2");
+projectDataBase.addProject("Projekt1");
+projectDataBase.addProject("Projekt2");
 
 screenController.buildPage();
 
 
 
 
-// todoDatabase.addTodo("namn0","datum0","beskrivning0");
-// todoDatabase.addTodo("namn1","datum1","beskrivning1");
-// todoDatabase.addTodo("namn2","datum2","beskrivning2");
-// todoDatabase.addTodo("namn3","datum3","beskrivning3");
-// todoDatabase.addTodo("namn4","datum4","beskrivning4");
-// todoDatabase.addTodo("namn5","datum5","beskrivning5");
-// todoDatabase.addTodo("namn6","datum6","beskrivning6");
-// todoDatabase.addTodo("namn7","datum8","beskrivning9");
+todoDataBase.addTodo("namn0","datum0","beskrivning0");
+todoDataBase.addTodo("namn1","datum1","beskrivning1");
+todoDataBase.addTodo("namn2","datum2","beskrivning2");
+todoDataBase.addTodo("namn3","datum3","beskrivning3");
+todoDataBase.addTodo("namn4","datum4","beskrivning4");
+todoDataBase.addTodo("namn5","datum5","beskrivning5");
+todoDataBase.addTodo("namn6","datum6","beskrivning6");
+todoDataBase.addTodo("namn7","datum8","beskrivning9");
 
 
-// todoDatabase.assignProjectID(0,5);
-// todoDatabase.assignProjectID(0,2);
-// todoDatabase.assignProjectID(0,4);
-// todoDatabase.assignProjectID(1,4);
+todoDataBase.assignProjectID(1,5);
+todoDataBase.assignProjectID(1,2);
+todoDataBase.assignProjectID(2,4);
+todoDataBase.assignProjectID(2,4);
 
+console.table(todoDataBase.todoArray);
 
-
-// console.table(todoDatabase.todoArray);
-
-// console.log(projectDatabase.projectArray[0].projectTodos());
+console.table(projectDataBase.projectArray);
