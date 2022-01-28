@@ -71,15 +71,96 @@ export function todoListConstructor(){
 function mainWindowProjectTodoList(project){
     const mainWindow = document.querySelector(".mainWindow");
     mainWindow.innerHTML = "";
-    const list = document.createElement("ul");
+
+    const title = document.createElement("h2");
+
+    title.textContent=project.name;
+
+    mainWindow.appendChild(title);
+
+    const todoTable = document.createElement("table");
+
+    const tableHeaderRow = document.createElement("tr");
+
+    const tableHeaderTodoName = document.createElement("th");
+    tableHeaderTodoName.textContent = "Todo Name";
+
+    const tableHeaderTodoDate = document.createElement("th");
+    tableHeaderTodoDate.textContent = "Due Date";
+
+    const tableHeaderTodoCompleted = document.createElement("th");
+    tableHeaderTodoCompleted.textContent = "Completed";
+
+
+
+    tableHeaderRow.appendChild(tableHeaderTodoName);
+    tableHeaderRow.appendChild(tableHeaderTodoDate);
+    tableHeaderRow.appendChild(tableHeaderTodoCompleted);
+    tableHeaderRow.appendChild(document.createElement("th"));
+    todoTable.appendChild(tableHeaderRow);
 
     const projectTodos = project.projectTodos();
 
     projectTodos.forEach(todo =>{
-        const todoListItem = document.createElement("li");
-        todoListItem.textContent = todo.name;
-        list.appendChild(todoListItem);
+        todoTable.appendChild(todoTableRow(todo));
     });
 
-    mainWindow.appendChild(list);
+    mainWindow.appendChild(todoTable);
+}
+
+function todoTableRow(todo){
+    const tableRow = document.createElement("tr");
+
+    const nameCell = document.createElement("td");
+    nameCell.textContent = todo.name;
+    tableRow.appendChild(nameCell);
+
+    const dateCell = document.createElement("td");
+    dateCell.textContent = todo.date;
+    tableRow.appendChild(dateCell);
+
+    const completedCell = document.createElement("td");
+    completedCell.textContent = todo.completed;
+    tableRow.appendChild(completedCell);
+
+    const editButtonCell = document.createElement("td");
+    editButtonCell.appendChild(editTodoButton(todo));
+    tableRow.appendChild(editButtonCell);
+    
+    return tableRow;
+}
+
+function editTodoButton(todo){
+    function showEditTodoButtonModal(todo){
+        const modalBackground = document.getElementById("todoModalBackground");
+        modalBackground.style.display = "block";
+    }
+
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.classList.add("todoEditButton");
+    editButton.onclick = function(todo){
+        showEditTodoButtonModal(todo);
+    };
+
+    return editButton;
+
+}
+
+export function editTodoModal(){
+    const modalBackground = document.createElement("div");
+    const modal = document.createElement("div");
+
+
+    modal.classList.add("modal");
+    modalBackground.classList.add("modalBackground");
+    modalBackground.setAttribute("id","todoModalBackground");
+
+
+
+
+
+    modalBackground.appendChild(modal);
+
+    return modalBackground;
 }

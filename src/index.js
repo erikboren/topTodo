@@ -2,7 +2,7 @@
 import './style.css';
 import { sideBarComponentConstructor } from './components.js';
 import { mainWindowConstructor } from './components.js';
-import { projectSideBarElementConstructor } from './components.js';
+import { editTodoModal } from './components.js';
 
 const todoDataBase = (function(){
     let todoIDCounter = 0;
@@ -119,6 +119,7 @@ const screenController = (function(){
         
         contentDiv.appendChild(sideBarComponentConstructor(projectDataBase));
         contentDiv.appendChild(mainWindowConstructor());
+        contentDiv.appendChild(editTodoModal());
     };
 
     return {
