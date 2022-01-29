@@ -131,36 +131,90 @@ function todoTableRow(todo){
 }
 
 function editTodoButton(todo){
-    function showEditTodoButtonModal(todo){
-        const modalBackground = document.getElementById("todoModalBackground");
-        modalBackground.style.display = "block";
-    }
-
     const editButton = document.createElement("button");
     editButton.textContent = "Edit";
     editButton.classList.add("todoEditButton");
-    editButton.onclick = function(todo){
-        showEditTodoButtonModal(todo);
+    editButton.onclick = function(){
+        showTodoFormEdit(todo);
     };
 
     return editButton;
 
 }
 
-export function editTodoModal(){
+function showTodoFormEdit(todo){
+    const modalContentDiv = document.querySelector(".modalContent");
+    modalContentDiv.innerHTML = "";
+
+    const modalBackground = document.getElementById("modalBackground");
+    modalBackground.style.display = "block";
+
+    const title = document.createElement("h3");
+    title.textContent = "Edit Todo";
+    modalContentDiv.appendChild(title);
+
+    const form = todoForm(true,todo);
+
+    modalContentDiv.appendChild(form);
+}
+
+function todoForm(edit,todo){
+    const form = document.createElement("form");
+
+    const nameLabel = document.createElement("label");
+    nameLabel.setAttribute("for","todoName");
+    nameLabel.textContent = "Todo name";
+    
+    const nameInput = document.createElement("input");
+    nameInput.setAttribute("type","text");
+    nameInput.setAttribute("id","todoName");
+    nameInput.setAttribute("name","todoName");
+
+    const dateLabel = document.createElement("label");
+    dateLabel.setAttribute("for","todoDate");
+    dateLabel.textContent = "Date";
+    
+    const dateInput = document.createElement("input");
+    dateInput.setAttribute("type","text");
+    dateInput.setAttribute("id","todoDate");
+    dateInput.setAttribute("name","todoDate");
+    
+    
+
+   
+
+    if(edit){
+        nameInput.setAttribute("value",todo.name);
+        dateInput.setAttribute("value",todo.date);
+    }
+    
+
+    form.appendChild(nameLabel);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(nameInput);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(dateLabel);
+    form.appendChild(document.createElement("br"));
+    form.appendChild(dateInput);
+
+    return form;
+}
+
+export function modalComponentConstructor(){
     const modalBackground = document.createElement("div");
     const modal = document.createElement("div");
-
+    const modalContent = document.createElement("div");
+    modalContent.classList.add("modalContent");
 
     modal.classList.add("modal");
     modalBackground.classList.add("modalBackground");
-    modalBackground.setAttribute("id","todoModalBackground");
+    modalBackground.setAttribute("id","modalBackground");
 
-
-
-
+    modal.appendChild(modalContent);
 
     modalBackground.appendChild(modal);
 
     return modalBackground;
 }
+
+
