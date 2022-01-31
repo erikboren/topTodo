@@ -1,8 +1,6 @@
 /*jshint esversion: 6 */
 import './style.css';
-import { sideBarComponentConstructor } from './components.js';
-import { mainWindowConstructor } from './components.js';
-import { modalComponentConstructor } from './components.js';
+import { userInterface } from './userinterface.js';
 
 const todoDataBase = (function(){
     let todoIDCounter = 0;
@@ -43,10 +41,15 @@ const todoDataBase = (function(){
         return filteredTodoArray;
     };
 
+    const todoIDFilter = function(todoID){
+        const filteredTodo = todoArray.filter(todo => todo.todoID == todoID)[0];
+        return filteredTodo;
+    };
+
     const assignProjectID = function(projectIDToAssign,todoID){
     
         if(projectDataBase.projectArray.some(project => project.projectID == projectIDToAssign)){
-            const todoToEdit = todoArray.filter(todo => todo.todoID == todoID)[0];
+            const todoToEdit = todoIDFilter(todoID);
             todoToEdit.projectID = projectIDToAssign;
         }
         else{
@@ -54,11 +57,21 @@ const todoDataBase = (function(){
         }
     };
 
+    const editTodo = function(todoID,newTodoName,newTodoDate,newTodoDesc,newTodoProjectID){
+        const todoToEdit = todoIDFilter(todoID);
+
+        todoToEdit.name = newTodoName;
+        todoToEdit.date = newTodoDate;
+        todoToEdit.desc = newTodoDesc;
+        assignProjectID(newTodoProjectID,todoID);
+    };
+
     return{
         addTodo: addTodo,
         todoArray:todoArray,
         projectIDFilter: projectIDFilter,
-        assignProjectID: assignProjectID        
+        assignProjectID: assignProjectID,
+        editTodo : editTodo        
     };
 
 })();
@@ -110,31 +123,9 @@ const projectDataBase = (function(){
    } ;
 })();
 
-const screenController = (function(){
-    const contentDiv = document.getElementById("content");
-    
-    
-
-    const buildPage = function(){
-        
-        contentDiv.appendChild(sideBarComponentConstructor(projectDataBase));
-        contentDiv.appendChild(mainWindowConstructor());
-        contentDiv.appendChild(modalComponentConstructor());
-    };
-
-    return {
-        buildPage: buildPage
-    };
-
-})();
 
 projectDataBase.addProject("Projekt1");
 projectDataBase.addProject("Projekt2");
-
-screenController.buildPage();
-
-
-
 
 todoDataBase.addTodo("namn0","datum0","beskrivning0");
 todoDataBase.addTodo("namn1","datum1","beskrivning1");
@@ -145,7 +136,6 @@ todoDataBase.addTodo("namn5","datum5","beskrivning5");
 todoDataBase.addTodo("namn6","datum6","beskrivning6");
 todoDataBase.addTodo("namn7","datum8","beskrivning9");
 
-
 todoDataBase.assignProjectID(1,5);
 todoDataBase.assignProjectID(1,2);
 todoDataBase.assignProjectID(2,4);
@@ -154,3 +144,5 @@ todoDataBase.assignProjectID(2,4);
 console.table(todoDataBase.todoArray);
 
 console.table(projectDataBase.projectArray);
+
+userInterface(todoDataBase,projectDataBase);

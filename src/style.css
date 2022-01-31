@@ -19,9 +19,14 @@ h1{
 }
 
 .mainWindow{
-    background-color: #fafbfe;
+    background-color: #f8f8f8;
     flex:auto;
-    padding: 1em;
+    padding: 1em;   
+}
+
+.mainWindowBox{
+    background-color:white;
+    border-radius: 1em;
 }
 
 table{
@@ -69,7 +74,7 @@ th, td {
     cursor: pointer;
 }
 
-.sideBarPlusButton, .todoEditButton{
+.sideBarPlusButton, .todoEditButton, .submitButton{
     color:white;
     background-color: #48ac4d;
     border: none;
@@ -107,5 +112,5 @@ th, td {
 }
 
 form{
-    
+
 }
