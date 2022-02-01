@@ -48,7 +48,7 @@ export function userInterface(todoDataBase,projectDataBase){
             projectSideBarElement.classList.add("sideBarListElement");
             
             projectSideBarElement.onclick = function(){
-                mainWindowProjectTodoList(project);
+                mainWindow.showProjectTodos(project);
             };
     
             return projectSideBarElement;
@@ -83,28 +83,121 @@ export function userInterface(todoDataBase,projectDataBase){
         const mainWindow = document.createElement("div");
         mainWindow.classList.add("mainWindow");        
         
+        function clearMainWindow(){
+            mainWindow.innerHTML = "";
+        }
+
         function titleBox(title){
-            const titleBox = document.createElement("div");
             const pageTitle = document.createElement("h1");
             pageTitle.textContent = title;
-        
-            titleBox.appendChild(pageTitle);
-            titleBox.classList.add("mainWindowBox");
-            
-            mainWindow.appendChild(titleBox);
+
+            mainWindowBox(pageTitle);
         }
         
+        function mainWindowBox(element){
+            const mainWindowBox = document.createElement("div");
+            mainWindowBox.classList.add("mainWindowBox");
+            mainWindowBox.appendChild(element);
+            mainWindow.appendChild(mainWindowBox);
+        }
+
         function projectList(){
-            mainWindow.innerHTML = "";
+            clearMainWindow();
+            const projectList = document.createElement("ul");
             titleBox("Projects");
 
+            projectDataBase.projectArray.forEach(project =>{
+                const projectListElement = document.createElement("li");
+                projectListElement.textContent = project.name;
+                projectListElement.onclick= function(){
+                    showProjectTodos(project);
+                };
+                projectList.appendChild(projectListElement);
+            });
+
+            mainWindowBox(projectList);
         }
         
+        function showProjectTodos(project){
+            function todoTable(project){
+                    function todoTableRow(todo){
+                        function editTodoButton(todo){
+                            const editButton = document.createElement("button");
+                            editButton.textContent = "Edit";
+                            editButton.classList.add("todoEditButton");
+                            editButton.onclick = function(){
+                                showTodoFormEdit(todo);
+                            };
+        
+                            return editButton;
+        
+                        }
+
+                        const tableRow = document.createElement("tr");
+
+                        const nameCell = document.createElement("td");
+                        nameCell.textContent = todo.name;
+                        tableRow.appendChild(nameCell);
+
+                        const dateCell = document.createElement("td");
+                        dateCell.textContent = todo.date;
+                        tableRow.appendChild(dateCell);
+
+                        const completedCell = document.createElement("td");
+                        completedCell.textContent = todo.completed;
+                        tableRow.appendChild(completedCell);
+
+                        const editButtonCell = document.createElement("td");
+                        editButtonCell.appendChild(editTodoButton(todo));
+                        tableRow.appendChild(editButtonCell);
+                        
+                        return tableRow;
+                }
+
+                
+                
+                const todoTable = document.createElement("table");
+
+                const tableHeaderRow = document.createElement("tr");
+
+                const tableHeaderTodoName = document.createElement("th");
+                tableHeaderTodoName.textContent = "Todo Name";
+
+                const tableHeaderTodoDate = document.createElement("th");
+                tableHeaderTodoDate.textContent = "Due Date";
+
+                const tableHeaderTodoCompleted = document.createElement("th");
+                tableHeaderTodoCompleted.textContent = "Completed";
+
+                tableHeaderRow.appendChild(tableHeaderTodoName);
+                tableHeaderRow.appendChild(tableHeaderTodoDate);
+                tableHeaderRow.appendChild(tableHeaderTodoCompleted);
+                tableHeaderRow.appendChild(document.createElement("th"));
+                todoTable.appendChild(tableHeaderRow);
+
+                const projectTodos = project.projectTodos();
+
+                projectTodos.forEach(todo =>{
+                    todoTable.appendChild(todoTableRow(todo));
+                });
+
+                mainWindowBox(todoTable);
+            }
+            
+            
+            clearMainWindow();
+
+            titleBox(project.name);
+            todoTable(project);
+        }
+
+
         projectList();
         
         return {
             mainWindowElement : mainWindow,
-            projectList : projectList
+            projectList : projectList,
+            showProjectTodos : showProjectTodos
         };
     })();
 
