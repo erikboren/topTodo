@@ -4,7 +4,6 @@ import './style.css';
 export function userInterface(todoDataBase,projectDataBase){
     const contentDiv = document.getElementById("content");
     
-
     const sideBar =(function(){
         function sideBarLogo(){
             const logo = document.createElement("div");
@@ -21,8 +20,7 @@ export function userInterface(todoDataBase,projectDataBase){
             headerText.textContent = text;
             header.classList.add("sideBarTopLevelHeader");
             
-            header.onclick = function(){
-                console.log("hej");
+            headerText.onclick = function(){
                 mainWindow.projectList();
             };
 
@@ -31,8 +29,8 @@ export function userInterface(todoDataBase,projectDataBase){
             headerPlusButton.classList.add("sideBarPlusButton");
             headerPlusButton.textContent = "+";
     
-            headerText.onclick = function(){
-                
+            headerPlusButton.onclick = function(){
+                modal.showProjectModal(false,false);
             };
     
             if(plusButton){
@@ -43,14 +41,27 @@ export function userInterface(todoDataBase,projectDataBase){
         }
         
         function projectSideBarElementConstructor(project){
-            const projectSideBarElement = document.createElement("p");
-            projectSideBarElement.textContent = project.name + " " + project.projectID;
+            const projectSideBarElement = document.createElement("div");
+            const projectSideBarElementText = document.createElement("p");
+            projectSideBarElementText.textContent = project.name + " " + project.projectID;
             projectSideBarElement.classList.add("sideBarListElement");
             
-            projectSideBarElement.onclick = function(){
+            projectSideBarElementText.onclick = function(){
                 mainWindow.showProjectTodos(project);
             };
-    
+            
+            projectSideBarElement.appendChild(projectSideBarElementText);
+
+            function projectSideBarElementButton(){
+                const button = document.createElement("i");
+                button.classList.add("fas");
+                button.classList.add("fa-ellipsis-h");
+
+                projectSideBarElement.appendChild(button);
+            }
+
+            projectSideBarElementButton();
+
             return projectSideBarElement;
             
         }
@@ -201,8 +212,72 @@ export function userInterface(todoDataBase,projectDataBase){
         };
     })();
 
+    const modal = (function(){
+        function hideModal(){
+            modal.style.display = "none";
+        }
+
+        function showModal(){
+            modal.style.display = "block";
+        }
+        
+        function clearModal(){
+            modalContent.innerHTML = "";
+        }
+
+        const modal = document.createElement("div");
+        modal.classList.add("modal");
+
+        modal.onclick= function(){
+            hideModal();
+        };
+
+       
+        const modalContent = document.createElement("div");
+        modalContent.classList.add("modalContent");
+
+        modal.appendChild(modalContent);
+
+        modalContent.onclick = function(){
+            showModal();
+        };
+
+        function modalBox(element){
+            const box = document.createElement("div");
+            box.appendChild(element);
+            modalContent.appendChild(box);
+        }
+
+        function modalTitle(text){
+            const title = document.createElement("h2");
+            title.textContent = text;
+
+            modalBox(title);
+        }
+
+        function showProjectModal(edit,project){
+            clearModal();
+            
+            let text;
+            if(edit){
+                 text = "Edit " + project.name;
+            } else{
+                text = "Create new project";
+            }
+
+            modalTitle(text);
+
+            showModal();
+        }
+
+        return{
+            modal : modal,
+            showProjectModal : showProjectModal
+        };
+    })();
     contentDiv.appendChild(sideBar.sideBarElement);
     contentDiv.appendChild(mainWindow.mainWindowElement);
+    contentDiv.appendChild(modal.modal);
 }
 
 // function sideBar(projectDataBase){
