@@ -112,6 +112,10 @@ const projectDataBase = (function(){
         sortProjectArray();
     };
 
+    function projectCompletionStatus(projectID){
+       return !projectTodos(projectID).some(todo  => todo.completed == false)
+    }
+
     addProject("Tasks not in a project");
     // projectArray[0].projectID = 99;
     // projectIDcounter = 0;
@@ -119,7 +123,8 @@ const projectDataBase = (function(){
 
    return{
        addProject: addProject,
-       projectArray: projectArray
+       projectArray: projectArray,
+       projectCompletionStatus: projectCompletionStatus
    } ;
 })();
 

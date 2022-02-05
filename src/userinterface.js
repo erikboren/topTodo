@@ -53,9 +53,9 @@ export function userInterface(todoDataBase,projectDataBase){
             projectSideBarElement.appendChild(projectSideBarElementText);
 
             function projectSideBarElementButton(){
-                const button = document.createElement("i");
-                button.classList.add("fas");
-                button.classList.add("fa-ellipsis-h");
+                const button = document.createElement("span");
+        
+                button.classList.add("fas", "fa-ellipsis-h");
 
                 projectSideBarElement.appendChild(button);
             }
