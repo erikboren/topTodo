@@ -113,7 +113,7 @@ const projectDataBase = (function(){
     };
 
     function projectCompletionStatus(projectID){
-       return !projectTodos(projectID).some(todo  => todo.completed == false)
+       return !projectTodos(projectID).some(todo  => todo.completed == false);
     }
 
     addProject("Tasks not in a project");
