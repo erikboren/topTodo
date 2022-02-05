@@ -228,19 +228,22 @@ export function userInterface(todoDataBase,projectDataBase){
         const modal = document.createElement("div");
         modal.classList.add("modal");
 
-        modal.onclick= function(){
-            hideModal();
-        };
 
-       
+       function closeModalButton(element){
+           const closeButton = document.createElement("i");
+           closeButton.classList.add("fas","fa-times","modalCloseButton");
+           closeButton.onclick = function(){
+               hideModal();
+           };
+           element.appendChild(closeButton);
+       }
+
+
         const modalContent = document.createElement("div");
         modalContent.classList.add("modalContent");
 
         modal.appendChild(modalContent);
 
-        modalContent.onclick = function(){
-            showModal();
-        };
 
         function modalBox(element){
             const box = document.createElement("div");
@@ -252,12 +255,19 @@ export function userInterface(todoDataBase,projectDataBase){
             const title = document.createElement("h2");
             title.textContent = text;
 
-            modalBox(title);
+            const div = document.createElement("div");
+            div.classList.add("modalTitleBox");
+
+            div.appendChild(title);
+
+            closeModalButton(div);
+            
+            modalBox(div);
         }
 
         function showProjectModal(edit,project){
             clearModal();
-            
+
             let text;
             if(edit){
                  text = "Edit " + project.name;

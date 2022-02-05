@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Roboto:wght@300;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster+Two:wght@700&family=Montserrat&family=Roboto:wght@300;500;700&display=swap');
 
 
 body{
@@ -7,9 +7,6 @@ body{
     font-family: 'Roboto', sans-serif;
 }
 
-h1{
-    
-}
 
 #content{
     display: flex;
@@ -29,6 +26,8 @@ h1{
     background-color:white;
     border-radius: 1em;
 }
+
+
 
 table{
     width:50%;
@@ -55,7 +54,7 @@ th, td {
 
 .sideBarLogo{
     font-size: 2em;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Lobster Two', sans-serif;
     text-align: center;
     margin: 0.75em;
     color:#a2f493;
@@ -111,6 +110,7 @@ th, td {
 
 .modalContent{
     background-color: #fefefe;
+    color: #555555;  
     margin: 15% 25%;
     padding: 20px;
     border: 1px solid #888;
@@ -120,6 +120,20 @@ th, td {
     z-index: 1;
 }
 
+.modalTitleBox{
+    display: flex;
+    justify-content: space-between;
+}
+
+.modalCloseButton{
+    text-align: right;
+    cursor: pointer;
+    color:#fa6767;
+}
+
+.modalCloseButton:hover{
+    color:#e22121;
+}
 form{
 
 }
