@@ -136,15 +136,17 @@ export function userInterface(todoDataBase,projectDataBase){
 
                     const projectCompletionStatusTD = document.createElement("td");
 
-                    const projectStatusI = document.createElement("i");
+                    projectCompletionStatusTD.classList.add("centerTD");
+
+                    const completionIcon = document.createElement("i");
 
                     if(projectDataBase.projectCompletionStatus(project)){
-                        projectStatusI.classList.add("fas", "fa-check","completed");
+                        completionIcon.classList.add("fas", "fa-cat","completed" );
                     }else{
-                        projectStatusI.classList.add("fas", "fa-times-cirlcle","notCompleted");
+                        completionIcon.classList.add("fas", "fa-times-circle","notCompleted");
                     }
 
-                    projectCompletionStatusTD.appendChild(projectStatusI);
+                    projectCompletionStatusTD.appendChild(completionIcon);
 
                     tableRow.appendChild(projectCompletionStatusTD);
 
