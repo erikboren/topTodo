@@ -113,20 +113,54 @@ export function userInterface(todoDataBase,projectDataBase){
         }
 
         function projectList(){
+            function projectTable(){
+                const table = document.createElement("table");
+                const tableHeaderRow = document.createElement("tr");
+                const tableHeadings = ["Project", "Completion status", "Planned completion","" ];
+
+                tableHeadings.forEach(tableHeading =>{
+                    const thElement = document.createElement("th");
+                    thElement.textContent = tableHeading;
+                    tableHeaderRow.appendChild(thElement);            
+                });
+
+                table.appendChild(tableHeaderRow);
+
+                function tableRow(project){
+                    const tableRow = document.createElement("tr");
+
+                    const projectNameTD = document.createElement("td");
+                    projectNameTD.textContent = project.name;
+
+                    tableRow.appendChild(projectNameTD);
+
+                    const projectCompletionStatusTD = document.createElement("td");
+
+                    const projectStatusI = document.createElement("i");
+
+                    if(projectDataBase.projectCompletionStatus(project)){
+                        projectStatusI.classList.add("fas", "fa-check","completed");
+                    }else{
+                        projectStatusI.classList.add("fas", "fa-times-cirlcle","notCompleted");
+                    }
+
+                    projectCompletionStatusTD.appendChild(projectStatusI);
+
+                    tableRow.appendChild(projectCompletionStatusTD);
+
+                    return tableRow;
+                }
+                
+                projectDataBase.projectArray.forEach(project =>{
+                    table.appendChild(tableRow(project));
+                });
+
+                return table;
+            }
+            
             clearMainWindow();
-            const projectList = document.createElement("ul");
             titleBox("Projects");
-
-            projectDataBase.projectArray.forEach(project =>{
-                const projectListElement = document.createElement("li");
-                projectListElement.textContent = project.name;
-                projectListElement.onclick= function(){
-                    showProjectTodos(project);
-                };
-                projectList.appendChild(projectListElement);
-            });
-
-            mainWindowBox(projectList);
+            mainWindowBox(projectTable());
         }
         
         function showProjectTodos(project){

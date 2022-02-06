@@ -112,8 +112,8 @@ const projectDataBase = (function(){
         sortProjectArray();
     };
 
-    function projectCompletionStatus(projectID){
-       return !projectTodos(projectID).some(todo  => todo.completed == false);
+    function projectCompletionStatus(project){
+       return !project.projectTodos().some(todo  => todo.completed == false);
     }
 
     addProject("Tasks not in a project");
@@ -146,8 +146,8 @@ todoDataBase.assignProjectID(1,2);
 todoDataBase.assignProjectID(2,4);
 todoDataBase.assignProjectID(2,4);
 
-console.table(todoDataBase.todoArray);
+// console.table(todoDataBase.todoArray);
 
-console.table(projectDataBase.projectArray);
+// console.table(projectDataBase.projectArray);
 
 userInterface(todoDataBase,projectDataBase);
