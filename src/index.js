@@ -97,10 +97,15 @@ const projectDataBase = (function(){
         return todoDataBase.projectIDFilter(projectID);
         };
 
+        function completionStatus(){
+            return !projectTodos().some(todo  => todo.completed == false);
+        }
+
         return{
             name: name,
             projectID: projectID,
-            projectTodos: projectTodos
+            projectTodos: projectTodos,
+            completionStatus : completionStatus
         };
     };
     
@@ -112,19 +117,14 @@ const projectDataBase = (function(){
         sortProjectArray();
     };
 
-    function projectCompletionStatus(project){
-       return !project.projectTodos().some(todo  => todo.completed == false);
-    }
+    
 
     addProject("Tasks not in a project");
-    // projectArray[0].projectID = 99;
-    // projectIDcounter = 0;
-
+  
 
    return{
        addProject: addProject,
        projectArray: projectArray,
-       projectCompletionStatus: projectCompletionStatus
    } ;
 })();
 
