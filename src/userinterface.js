@@ -140,19 +140,31 @@ export function userInterface(todoDataBase,projectDataBase){
 
                     const projectCompletionStatusTD = document.createElement("td");
 
-                    projectCompletionStatusTD.classList.add("centerTD");
-
-                    const completionIcon = document.createElement("i");
-
                     if(project.completionStatus()){
-                        completionIcon.classList.add("fas", "fa-cat","completed" );
+                        projectCompletionStatusTD.textContent = "Completed";
                     }else{
-                        completionIcon.classList.add("fas", "fa-times-circle","notCompleted");
+                        projectCompletionStatusTD.textContent = "Not completed";
                     }
-
-                    projectCompletionStatusTD.appendChild(completionIcon);
+                    
 
                     tableRow.appendChild(projectCompletionStatusTD);
+
+                    const estProjectCompletionTD = document.createElement("td");
+
+                    tableRow.appendChild(estProjectCompletionTD);
+
+                    const editProjectTD = document.createElement("td");
+
+                    const editProjectIcon = document.createElement("span");
+
+                    editProjectIcon.classList.add("material-icons-outlined");
+
+                    editProjectIcon.textContent = "edit";
+
+                    editProjectTD.appendChild(editProjectIcon);
+
+                    tableRow.appendChild(editProjectTD);
+
 
                     return tableRow;
                 }
@@ -160,6 +172,9 @@ export function userInterface(todoDataBase,projectDataBase){
                 projectDataBase.projectArray.forEach(project =>{
                     table.appendChild(tableRow(project));
                 });
+
+
+
 
                 return table;
             }
@@ -278,7 +293,6 @@ export function userInterface(todoDataBase,projectDataBase){
            element.appendChild(closeButton);
        }
 
-
         const modalContent = document.createElement("div");
         modalContent.classList.add("modalContent");
 
@@ -305,18 +319,76 @@ export function userInterface(todoDataBase,projectDataBase){
             modalBox(div);
         }
 
+        function inputBox(name,value,type,id){
+            const input = document.createElement("input");
+
+            input.setAttribute("name",name);
+            input.setAttribute("type",type);
+            input.setAttribute("value", value);
+            input.setAttribute("id",id);
+
+            input.onclick = function(){
+                if(input.value == value){
+                    input.setAttribute("value","");
+                }
+            };
+
+            return input;
+
+        }
+
+        function inputLabel(name,labelText){
+            const label = document.createElement("label");
+            label.setAttribute("for",name);
+            label.textContent = labelText;
+
+            return label;
+        }
+
         function showProjectModal(edit,project){
+            function projectModalForm(){
+                const formDiv = document.createElement("div");
+                
+                const form = document.createElement("form");
+
+                form.appendChild(inputLabel("projectName", "Project Name"));
+                form.appendChild(document.createElement("br"));
+                form.appendChild(inputBox("projectName","Project Name", "text","projectNameInput"));
+
+                formDiv.appendChild(form);
+
+                const submitButton = document.createElement("button");
+
+                submitButton.textContent = "Create Project";
+
+                submitButton.classList.add("submitButton");
+
+                submitButton.onclick = function(){
+                    const newProjectName = document.getElementById("projectNameInput").value;
+                    console.log(newProjectName);
+                    projectDataBase.addProject(newProjectName);
+                    hideModal();
+                    mainWindow.projectList();
+                };
+
+                formDiv.appendChild(submitButton);
+
+                modalBox(formDiv);
+
+            }
+            
             clearModal();
 
             let text;
             if(edit){
                  text = "Edit " + project.name;
             } else{
-                text = "Create new project";
+                text = "Create a new project";
             }
 
             modalTitle(text);
 
+            projectModalForm();
             showModal();
         }
 

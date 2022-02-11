@@ -98,7 +98,12 @@ const projectDataBase = (function(){
         };
 
         function completionStatus(){
-            return !projectTodos().some(todo  => todo.completed == false);
+            if(projectTodos().length==0){
+                return false;
+            }else{
+                return !projectTodos().some(todo  => todo.completed == false);}
+
+            
         }
 
         return{
