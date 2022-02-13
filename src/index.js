@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 import './style.css';
 import { userInterface } from './userinterface.js';
+import { format, compareAsc } from 'date-fns';
 
 const todoDataBase = (function(){
     let todoIDCounter = 0;
@@ -134,17 +135,19 @@ const projectDataBase = (function(){
 })();
 
 
+
 projectDataBase.addProject("Projekt1");
 projectDataBase.addProject("Projekt2");
 
-todoDataBase.addTodo("namn0","datum0","beskrivning0");
-todoDataBase.addTodo("namn1","datum1","beskrivning1");
-todoDataBase.addTodo("namn2","datum2","beskrivning2");
-todoDataBase.addTodo("namn3","datum3","beskrivning3");
-todoDataBase.addTodo("namn4","datum4","beskrivning4");
-todoDataBase.addTodo("namn5","datum5","beskrivning5");
-todoDataBase.addTodo("namn6","datum6","beskrivning6");
-todoDataBase.addTodo("namn7","datum8","beskrivning9");
+
+todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0");
+todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1");
+todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2");
+todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3");
+todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4");
+todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5");
+todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6");
+todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9");
 
 todoDataBase.assignProjectID(1,5);
 todoDataBase.assignProjectID(1,2);

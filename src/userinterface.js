@@ -1,6 +1,6 @@
 /*jshint esversion: 6 */
 import './style.css';
-
+import { format, compareAsc } from 'date-fns';
 export function userInterface(todoDataBase,projectDataBase){
     const contentDiv = document.getElementById("content");
     
@@ -206,7 +206,7 @@ export function userInterface(todoDataBase,projectDataBase){
                         tableRow.appendChild(nameCell);
 
                         const dateCell = document.createElement("td");
-                        dateCell.textContent = todo.date;
+                        dateCell.textContent = format(todo.date,"dd/MM/yyyy");
                         tableRow.appendChild(dateCell);
 
                         const completedCell = document.createElement("td");
