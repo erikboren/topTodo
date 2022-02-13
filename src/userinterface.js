@@ -151,6 +151,8 @@ export function userInterface(todoDataBase,projectDataBase){
 
                     const estProjectCompletionTD = document.createElement("td");
 
+                    estProjectCompletionTD.textContent = format(project.estProjectCompletion(),"dd/MM/yyyy");
+
                     tableRow.appendChild(estProjectCompletionTD);
 
                     const editProjectTD = document.createElement("td");

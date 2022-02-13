@@ -107,11 +107,22 @@ const projectDataBase = (function(){
             
         }
 
+        function estProjectCompletion(){
+            const dates = [];
+            projectTodos().forEach(todo =>{
+                dates.push(todo.date);
+            });
+            const maxDate = new Date(Math.max.apply(null,dates));
+        
+            return maxDate;
+        }
+
         return{
             name: name,
             projectID: projectID,
             projectTodos: projectTodos,
-            completionStatus : completionStatus
+            completionStatus : completionStatus,
+            estProjectCompletion: estProjectCompletion
         };
     };
     
