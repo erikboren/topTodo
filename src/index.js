@@ -86,9 +86,10 @@ const projectDataBase = (function(){
         });
     }
 
-    const projectFactory = function(projectName){
+    const projectFactory = function(projectName,projectDescription){
         
         let name = projectName;
+        let description = projectDescription;
         let projectID = projectIDcounter;
 
         projectIDcounter ++;
@@ -120,6 +121,7 @@ const projectDataBase = (function(){
         return{
             name: name,
             projectID: projectID,
+            description : description,
             projectTodos: projectTodos,
             completionStatus : completionStatus,
             estProjectCompletion: estProjectCompletion
@@ -147,8 +149,8 @@ const projectDataBase = (function(){
 
 
 
-projectDataBase.addProject("Projekt1");
-projectDataBase.addProject("Projekt2");
+projectDataBase.addProject("Projekt1","Detta är projekt 1");
+projectDataBase.addProject("Projekt2","Detta är projekt 2");
 
 
 todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0");

@@ -356,6 +356,10 @@ export function userInterface(todoDataBase,projectDataBase){
                 form.appendChild(inputLabel("projectName", "Project Name"));
                 form.appendChild(document.createElement("br"));
                 form.appendChild(inputBox("projectName","Project Name", "text","projectNameInput"));
+                form.appendChild(document.createElement("br"));
+                form.appendChild(inputLabel("projectDesc", "Description"));
+                form.appendChild(document.createElement("br"));
+                form.appendChild(inputBox("projectdesc","Description", "text","projectDescInput"));
 
                 formDiv.appendChild(form);
 
@@ -367,8 +371,9 @@ export function userInterface(todoDataBase,projectDataBase){
 
                 submitButton.onclick = function(){
                     const newProjectName = document.getElementById("projectNameInput").value;
+                    const newProjectDesc = document.getElementById("projectDescInput").value;
                     console.log(newProjectName);
-                    projectDataBase.addProject(newProjectName);
+                    projectDataBase.addProject(newProjectName,newProjectDesc);
                     hideModal();
                     mainWindow.projectList();
                 };
