@@ -88,6 +88,8 @@ export function userInterface(todoDataBase,projectDataBase){
         return {sideBarElement : sideBarElement,
                 refresh: refreshSideBarProjectList
         };
+        
+
     })();
 
     const mainWindow =(function(){
@@ -151,7 +153,7 @@ export function userInterface(todoDataBase,projectDataBase){
 
                     const estProjectCompletionTD = document.createElement("td");
 
-                    estProjectCompletionTD.textContent = format(project.estProjectCompletion(),"dd/MM/yyyy");
+                    estProjectCompletionTD.textContent = project.estProjectCompletion() != null ? format(project.estProjectCompletion(),"dd/MM/yyyy") : "N/A";
 
                     tableRow.appendChild(estProjectCompletionTD);
 
@@ -321,13 +323,21 @@ export function userInterface(todoDataBase,projectDataBase){
             modalBox(div);
         }
 
-        function inputBox(name,value,type,id){
-            const input = document.createElement("input");
-
+        function inputBox(name,value,type,id,textarea){
+            var input = "";
+            if(textarea){
+                input = document.createElement("textarea");
+                input.setAttribute("rows","4");
+                input.setAttribute("cols","50");
+            }else{
+                input = document.createElement("input");
+            }
+            
             input.setAttribute("name",name);
             input.setAttribute("type",type);
             input.setAttribute("value", value);
             input.setAttribute("id",id);
+
 
             input.onclick = function(){
                 if(input.value == value){
@@ -355,11 +365,11 @@ export function userInterface(todoDataBase,projectDataBase){
 
                 form.appendChild(inputLabel("projectName", "Project Name"));
                 form.appendChild(document.createElement("br"));
-                form.appendChild(inputBox("projectName","Project Name", "text","projectNameInput"));
+                form.appendChild(inputBox("projectName","Project Name", "text","projectNameInput",false));
                 form.appendChild(document.createElement("br"));
                 form.appendChild(inputLabel("projectDesc", "Description"));
                 form.appendChild(document.createElement("br"));
-                form.appendChild(inputBox("projectdesc","Description", "text","projectDescInput"));
+                form.appendChild(inputBox("projectdesc","Description", "text","projectDescInput",true));
 
                 formDiv.appendChild(form);
 
@@ -376,6 +386,7 @@ export function userInterface(todoDataBase,projectDataBase){
                     projectDataBase.addProject(newProjectName,newProjectDesc);
                     hideModal();
                     mainWindow.projectList();
+                    sideBar.refresh(projectDataBase);
                 };
 
                 formDiv.appendChild(submitButton);
