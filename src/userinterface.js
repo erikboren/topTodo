@@ -190,7 +190,7 @@ export function userInterface(todoDataBase,projectDataBase){
         
         function showProjectTodos(project){
             function todoTable(project){
-                    function todoTableRow(todo){
+                function todoTableRow(todo){
                         function editTodoButton(todo){
                             const editButton = document.createElement("button");
                             editButton.textContent = "Edit";
@@ -224,7 +224,23 @@ export function userInterface(todoDataBase,projectDataBase){
                         return tableRow;
                 }
 
-                
+                function todoTableAddRow(){
+                    const tableRow = document.createElement("tr");
+
+                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
+                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
+                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
+
+                    const addTodoButton = document.createElement("button");
+                    addTodoButton.classList.add("addTodoButton");
+                    addTodoButton.textContent = "Add task";
+
+                    const addTodoButtonTD = document.createElement("td").appendChild(addTodoButton);
+                    tableRow.appendChild(addTodoButtonTD);
+
+                    return tableRow;
+                    
+                }
                 
                 const todoTable = document.createElement("table");
 
@@ -250,6 +266,9 @@ export function userInterface(todoDataBase,projectDataBase){
                 projectTodos.forEach(todo =>{
                     todoTable.appendChild(todoTableRow(todo));
                 });
+                    
+                    todoTable.appendChild(todoTableAddRow());
+
 
                 mainWindowBox(todoTable);
             }
@@ -410,9 +429,25 @@ export function userInterface(todoDataBase,projectDataBase){
             showModal();
         }
 
+        function showTodoModal(edit,todo){
+            
+            clearModal();
+
+            let text;
+            if(edit){
+                text = "Edit todo " + todo.name;
+            }else{
+                text = "Create a new todo";
+            }
+
+            modalTitle(text);
+            showModal();
+        }
+
         return{
             modal : modal,
-            showProjectModal : showProjectModal
+            showProjectModal : showProjectModal,
+            showTodoModal : showTodoModal
         };
     })();
     contentDiv.appendChild(sideBar.sideBarElement);
