@@ -94,7 +94,7 @@ table{
     color:#aab3be;
 }
 
-.sideBarPlusButton, .todoEditButton, .submitButton{
+.sideBarPlusButton, .todoEditButton, .submitButton, .addTodoButton{
     color:white;
     background-color: #48ac4d;
     border: none;
@@ -103,10 +103,18 @@ table{
     cursor: pointer;
 }
 
-.todoEditButton{
+.addTodoButton{
+    background-color: #4c43ca;  
+}
+
+.todoEditButton, .addTodoButton{
     font-size: 1em;
 }
 /* ModalStuff */
+
+.noBorder{
+    border: none;
+}
 
 .modal{
     display: none; /* Hidden by default */
