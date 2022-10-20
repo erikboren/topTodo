@@ -6,7 +6,7 @@ import { format, compareAsc } from 'date-fns';
 const todoDataBase = (function(){
     let todoIDCounter = 0;
     
-    const todoFactory = function(todoName,todoDate,todoDesc){
+    const todoFactory = function(todoName,todoDate,todoDesc,todoPriority){
         let name = todoName;
         let date = todoDate;
         
@@ -14,6 +14,7 @@ const todoDataBase = (function(){
         let completed = false;
         let todoID = todoIDCounter;
         let projectID = 0;
+        let priority = todoPriority;
         
         todoIDCounter ++;
        
@@ -24,6 +25,7 @@ const todoDataBase = (function(){
             completed: completed,
             todoID: todoID,
             projectID: projectID,
+            priority: priority
             
         };
        };
@@ -32,8 +34,8 @@ const todoDataBase = (function(){
     
     const todoArray = [];
 
-    const addTodo = function(todoName,todoDate,todoDesc){
-        const todo = todoFactory(todoName,todoDate,todoDesc);
+    const addTodo = function(todoName,todoDate,todoDesc,todoPriority){
+        const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority);
         todoArray.push(todo);
     };
 
@@ -58,13 +60,23 @@ const todoDataBase = (function(){
         }
     };
 
-    const editTodo = function(todoID,newTodoName,newTodoDate,newTodoDesc,newTodoProjectID){
+    const editTodo = function(todoID,newTodoName,newTodoDate,newTodoDesc,newTodoProjectID,newTodoPriority){
         const todoToEdit = todoIDFilter(todoID);
 
         todoToEdit.name = newTodoName;
         todoToEdit.date = newTodoDate;
         todoToEdit.desc = newTodoDesc;
         assignProjectID(newTodoProjectID,todoID);
+        todo.ToEdit.priority = newTodoPriority;
+    };
+
+    const toggleTodoCompletion = function(todoID){
+        const todoToEdit = todoIDFilter(todoID);
+        if (todoToEdit.completed){
+            todoToEdit.completed = false;
+        } else {
+            todoToEdit.completed = true;
+        }
     };
 
     return{
@@ -72,7 +84,8 @@ const todoDataBase = (function(){
         todoArray:todoArray,
         projectIDFilter: projectIDFilter,
         assignProjectID: assignProjectID,
-        editTodo : editTodo        
+        editTodo : editTodo,
+        toggleTodoCompletion : toggleTodoCompletion        
     };
 
 })();
@@ -157,14 +170,14 @@ projectDataBase.addProject("Projekt1","Detta är projekt 1");
 projectDataBase.addProject("Projekt2","Detta är projekt 2");
 
 
-todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0");
-todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1");
-todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2");
-todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3");
-todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4");
-todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5");
-todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6");
-todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9");
+todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0",1);
+todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1",2);
+todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2",4);
+todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3",3);
+todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4",2);
+todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5",3);
+todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6",5);
+todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9",6);
 
 todoDataBase.assignProjectID(1,5);
 todoDataBase.assignProjectID(1,2);

@@ -209,13 +209,28 @@ export function userInterface(todoDataBase,projectDataBase){
                         nameCell.textContent = todo.name;
                         tableRow.appendChild(nameCell);
 
+                        const priorityCell = document.createElement("td");
+                        priorityCell.textContent = todo.priority;
+                        tableRow.appendChild(priorityCell);
+
                         const dateCell = document.createElement("td");
                         dateCell.textContent = format(todo.date,"dd/MM/yyyy");
                         tableRow.appendChild(dateCell);
 
                         const completedCell = document.createElement("td");
-                        completedCell.textContent = todo.completed;
+                        if(todo.completed == true){
+                            completedCell.textContent = 'Completed';
+                        } else{
+                            completedCell.textContent = 'Not completed';
+                        }
+                        
                         tableRow.appendChild(completedCell);
+
+                        completedCell.onclick = function(){
+                            todoDataBase.toggleTodoCompletion(todo.todoID);
+                            showProjectTodos(project);
+
+                        };
 
                         const editButtonCell = document.createElement("td");
                         editButtonCell.appendChild(editTodoButton(todo));
@@ -224,13 +239,15 @@ export function userInterface(todoDataBase,projectDataBase){
                         return tableRow;
                 }
 
-                function todoTableAddRow(){
+                function todoTableAddRow(){ //Adds a "blank" row at the bottom with an "add task button"
                     const tableRow = document.createElement("tr");
 
-                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
-                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
-                    tableRow.appendChild(document.createElement("td").classList.add("noBorder"));
-
+                    for(var i = 0; i <4;i++){
+                        const tableCell = document.createElement("td");
+                        tableCell.classList.add("noBorder");
+                        tableRow.appendChild(tableCell);
+                    }
+            
                     const addTodoButton = document.createElement("button");
                     addTodoButton.classList.add("addTodoButton");
                     addTodoButton.textContent = "Add task";
@@ -249,6 +266,9 @@ export function userInterface(todoDataBase,projectDataBase){
                 const tableHeaderTodoName = document.createElement("th");
                 tableHeaderTodoName.textContent = "Todo Name";
 
+                const tableHeaderTodoPriority = document.createElement("th");
+                tableHeaderTodoPriority.textContent = "Priority";
+
                 const tableHeaderTodoDate = document.createElement("th");
                 tableHeaderTodoDate.textContent = "Due Date";
 
@@ -256,6 +276,7 @@ export function userInterface(todoDataBase,projectDataBase){
                 tableHeaderTodoCompleted.textContent = "Completed";
 
                 tableHeaderRow.appendChild(tableHeaderTodoName);
+                tableHeaderRow.appendChild(tableHeaderTodoPriority);
                 tableHeaderRow.appendChild(tableHeaderTodoDate);
                 tableHeaderRow.appendChild(tableHeaderTodoCompleted);
                 tableHeaderRow.appendChild(document.createElement("th"));
