@@ -245,6 +245,7 @@ export function userInterface(todoDataBase,projectDataBase){
                     for(var i = 0; i <4;i++){
                         const tableCell = document.createElement("td");
                         tableCell.classList.add("noBorder");
+                        tableCell.textContent = " ";
                         tableRow.appendChild(tableCell);
                     }
             
@@ -252,7 +253,9 @@ export function userInterface(todoDataBase,projectDataBase){
                     addTodoButton.classList.add("addTodoButton");
                     addTodoButton.textContent = "Add task";
 
-                    const addTodoButtonTD = document.createElement("td").appendChild(addTodoButton);
+                    const addTodoButtonTD = document.createElement("td");
+                    addTodoButtonTD.appendChild(addTodoButton);
+                    addTodoButtonTD.classList.add("noBorder");
                     tableRow.appendChild(addTodoButtonTD);
 
                     return tableRow;

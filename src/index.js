@@ -155,7 +155,7 @@ const projectDataBase = (function(){
 
     
 
-    addProject("Tasks not in a project");
+    addProject("Inbox");
   
 
    return{
