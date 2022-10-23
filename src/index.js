@@ -99,13 +99,18 @@ const projectDataBase = (function(){
         });
     }
 
-    const projectFactory = function(projectName,projectDescription){
+    const projectFactory = function(projectName,projectDescription,projectID = false){
         
         let name = projectName;
         let description = projectDescription;
-        let projectID = projectIDcounter;
+        
+        if(!projectID){
+            projectID = projectIDcounter;
+            projectIDcounter ++;
+        }
+        
 
-        projectIDcounter ++;
+        
 
 
         const projectTodos = function(){
@@ -147,45 +152,104 @@ const projectDataBase = (function(){
     
     let projectArray = [];
 
-    const addProject = function(projectName){
-        const project = projectFactory(projectName);
+    const addProject = function(projectName, projectDesc, projectID = false){
+        const project = projectFactory(projectName,projectDesc,projectID);
         projectArray.push(project);
         sortProjectArray();
+        exportArray();
+        importArray();
     };
 
-    
+    function importArray(){
+        if(storageAvailable() && !window.localStorage.getItem('projectArray') ){
+            const projectImportArray = window.localStorage.getItem('projectArray');
+            console.log(projectImportArray);
+            // addProject(projectImport.name,projectImport.description,projectImport.projectID));
+        }
+        
 
-    addProject("Inbox");
-  
+    }
+
+    function exportArray(){
+        if(true){
+            const projectExportArray = [];
+        projectArray.forEach(project =>{
+           const projectExportObject = {
+                "name" : project.name,
+                "description" : project.description,
+                "projectID" : project.projectID
+            };
+            projectExportArray.push(projectExportObject);
+        });
+        console.log(JSON.stringify(projectExportArray) + "hej!");
+        window.localStorage.setItem('projectArray',JSON.stringify(projectExportArray));
+        }
+        
+    }
+
+    //addProject("Inbox");
+
+    importArray();
 
    return{
        addProject: addProject,
        projectArray: projectArray,
+       importArray: importArray,
+       exportArray: exportArray
    } ;
 })();
 
 
 
-projectDataBase.addProject("Projekt1","Detta är projekt 1");
-projectDataBase.addProject("Projekt2","Detta är projekt 2");
+// projectDataBase.addProject("Projekt1","Detta är projekt 1");
+// projectDataBase.addProject("Projekt2","Detta är projekt 2");
 
 
-todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0",1);
-todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1",2);
-todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2",4);
-todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3",3);
-todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4",2);
-todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5",3);
-todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6",5);
-todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9",6);
+// todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0",1);
+// todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1",2);
+// todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2",4);
+// todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3",3);
+// todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4",2);
+// todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5",3);
+// todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6",5);
+// todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9",6);
 
-todoDataBase.assignProjectID(1,5);
-todoDataBase.assignProjectID(1,2);
-todoDataBase.assignProjectID(2,4);
-todoDataBase.assignProjectID(2,4);
+// todoDataBase.assignProjectID(1,5);
+// todoDataBase.assignProjectID(1,2);
+// todoDataBase.assignProjectID(2,4);
+// todoDataBase.assignProjectID(2,4);
 
 // console.table(todoDataBase.todoArray);
 
 // console.table(projectDataBase.projectArray);
 
 userInterface(todoDataBase,projectDataBase);
+
+
+
+
+function storageAvailable(type) {
+    let storage;
+    try {
+        storage = window[type];
+        const x = '__storage_test__';
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+    }
+    catch (e) {
+        return e instanceof DOMException && (
+            // everything except Firefox
+            e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === 'QuotaExceededError' ||
+            // Firefox
+            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
+            // acknowledge QuotaExceededError only if there's something already stored
+            (storage && storage.length !== 0);
+    }
+}
+
