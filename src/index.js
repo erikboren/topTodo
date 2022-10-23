@@ -156,15 +156,19 @@ const projectDataBase = (function(){
         const project = projectFactory(projectName,projectDesc,projectID);
         projectArray.push(project);
         sortProjectArray();
-        exportArray();
-        importArray();
+        
+        if(project.projectID != 0){
+            console.log("hej!");
+            exportArray();
+        }
+        
     };
 
     function importArray(){
-        if(storageAvailable() && !window.localStorage.getItem('projectArray') ){
-            const projectImportArray = window.localStorage.getItem('projectArray');
-            console.log(projectImportArray);
-            // addProject(projectImport.name,projectImport.description,projectImport.projectID));
+        if(storageAvailable('localStorage') && window.localStorage.getItem('projectArray') != null ){
+            const projectImportString = window.localStorage.getItem('projectArray');
+            const projectImport = JSON.parse(projectImportString);
+            projectImport.forEach(project => addProject(project.name,project.description,project.projectID));
         }
         
 
@@ -179,15 +183,19 @@ const projectDataBase = (function(){
                 "description" : project.description,
                 "projectID" : project.projectID
             };
-            projectExportArray.push(projectExportObject);
+            if(project.projectID == 0){
+
+            } else {
+                projectExportArray.push(projectExportObject);
+            }
+            
         });
-        console.log(JSON.stringify(projectExportArray) + "hej!");
         window.localStorage.setItem('projectArray',JSON.stringify(projectExportArray));
         }
         
     }
 
-    //addProject("Inbox");
+    addProject("Inbox","Inbox",0);
 
     importArray();
 
