@@ -240,6 +240,7 @@ export function userInterface(todoDataBase,projectDataBase){
                 }
 
                 function todoTableAddRow(){ //Adds a "blank" row at the bottom with an "add task button"
+                    
                     const tableRow = document.createElement("tr");
 
                     for(var i = 0; i <4;i++){
@@ -253,10 +254,40 @@ export function userInterface(todoDataBase,projectDataBase){
                     addTodoButton.classList.add("addTodoButton");
                     addTodoButton.textContent = "Add task";
 
+                    addTodoButton.onclick = function(){
+                        todoAddRowTransform();
+                    };
+                
+
                     const addTodoButtonTD = document.createElement("td");
                     addTodoButtonTD.appendChild(addTodoButton);
                     addTodoButtonTD.classList.add("noBorder");
+
                     tableRow.appendChild(addTodoButtonTD);
+
+                    function todoAddRowTransform(){
+                        const nameCell = tableRow.childNodes[0];
+                        const nameInput = document.createElement("input");
+                        nameInput.setAttribute('type','text');
+                        nameInput.setAttribute('id','nameInput');
+                        nameInput.setAttribute('value','Todo name');
+                        nameCell.appendChild(nameInput);
+
+                        const priorityCell = tableRow.childNodes[1];
+                        const priorityInput = document.createElement('input');
+                        priorityInput.setAttribute('type','range');
+                        priorityCell.appendChild(priorityInput);
+
+                        const dateCell = tableRow.childNodes[2];
+                        const dateInput = document.createElement('input');
+                        dateInput.setAttribute('type','date');
+                        dateInput.value ='2022-10-25';
+                        dateCell.appendChild(dateInput);
+                        console.log(dateInput.value);
+                        addTodoButton.onclick = function(){
+                            todoDataBase.addTodo(nameInput.value,dateInput.valueAsNumber,'',priorityInput.value,project.ProjectID);
+                            showProjectTodos(project);};
+                    }
 
                     return tableRow;
                     

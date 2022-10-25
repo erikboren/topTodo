@@ -6,14 +6,16 @@ import { format, compareAsc } from 'date-fns';
 const todoDataBase = (function(){
     let todoIDCounter = 0;
     
-    const todoFactory = function(todoName,todoDate,todoDesc,todoPriority){
+    const todoFactory = function(todoName,todoDate,todoDesc,todoPriority,projectID=false){
         let name = todoName;
         let date = todoDate;
         
         let desc = todoDesc;
         let completed = false;
         let todoID = todoIDCounter;
-        let projectID = 0;
+        if(!projectID){
+            projectID=0;
+        }
         let priority = todoPriority;
         
         todoIDCounter ++;
@@ -34,8 +36,8 @@ const todoDataBase = (function(){
     
     const todoArray = [];
 
-    const addTodo = function(todoName,todoDate,todoDesc,todoPriority){
-        const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority);
+    const addTodo = function(todoName,todoDate,todoDesc,todoPriority,projectID = false){
+        const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority, projectID);
         todoArray.push(todo);
     };
 
@@ -158,7 +160,6 @@ const projectDataBase = (function(){
         sortProjectArray();
         
         if(project.projectID != 0){
-            console.log("hej!");
             exportArray();
         }
         
