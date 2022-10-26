@@ -6,20 +6,21 @@ import { format, compareAsc } from 'date-fns';
 const todoDataBase = (function(){
     let todoIDCounter = 0;
     
-    const todoFactory = function(todoName,todoDate,todoDesc,todoPriority,projectID=false){
+    const todoFactory = function(todoName,todoDate,todoDesc,todoPriority,projectID,todoID){
         let name = todoName;
         let date = todoDate;
         
         let desc = todoDesc;
         let completed = false;
-        let todoID = todoIDCounter;
         if(!projectID){
             projectID=0;
         }
+        
         let priority = todoPriority;
         
-        todoIDCounter ++;
-       
+        if(!todoID){
+            todoID = todoIDCounter; 
+        }
         return{
             name: name,
             date: date,
@@ -36,10 +37,21 @@ const todoDataBase = (function(){
     
     const todoArray = [];
 
-    const addTodo = function(todoName,todoDate,todoDesc,todoPriority,projectID = false){
-        const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority, projectID);
+    const addTodo = function(todoName,todoDate,todoDesc,todoPriority,projectID,todoID = false){
+        const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority, projectID, todoID);
+        updateTodoIDCounter();
         todoArray.push(todo);
+        exportArray();
     };
+
+    const updateTodoIDCounter = function(){
+        if(todoArray.length>0){
+            todoIDCounter = todoArray.reduce(function(a,b){
+                return (a.todoID < b.todoID) ? a : b;
+            }).todoID +1;
+        }
+        };
+        
 
     const projectIDFilter = function(projectID){
         const filteredTodoArray = todoArray.filter(todo => todo.projectID == projectID);
@@ -70,6 +82,7 @@ const todoDataBase = (function(){
         todoToEdit.desc = newTodoDesc;
         assignProjectID(newTodoProjectID,todoID);
         todo.ToEdit.priority = newTodoPriority;
+        exportArray();
     };
 
     const toggleTodoCompletion = function(todoID){
@@ -80,6 +93,40 @@ const todoDataBase = (function(){
             todoToEdit.completed = true;
         }
     };
+
+    const importArray = function(){
+        if(storageAvailable('localStorage') && window.localStorage.getItem('todoArray') != null ){
+            const todoImportString = window.localStorage.getItem('todoArray');
+            const todoImportArray = JSON.parse(todoImportString);
+
+            todoImportArray.forEach(todoImport =>{
+                addTodo(todoImport.name, todoImport.date, todoImport.desc, todoImport.priority, todoImport.projectID, todoImport.todoID);
+            });
+
+        }
+    };
+
+    const exportArray = function(){
+        if(storageAvailable('localStorage')){
+            const todoExportArray = [];
+            todoArray.forEach(todo =>{
+               const todoExportItem = {
+                    "todoID" : todo.todoID,
+                    'name' : todo.name,
+                    'date' : todo.date,
+                    'desc' : todo.desc,
+                    'completed' : todo.completed,
+                    'priority' : todo.priority,
+                    'projectID' : todo.projectID
+            };
+            todoExportArray.push(todoExportItem);
+            });
+            window.localStorage.setItem('todoArray',JSON.stringify(todoExportArray));
+        }
+    };
+
+    importArray();
+
 
     return{
         addTodo: addTodo,
@@ -93,7 +140,7 @@ const todoDataBase = (function(){
 })();
 
 const projectDataBase = (function(){
-    let projectIDcounter = 0;
+    let projectIDCounter = 0;
     
     function sortProjectArray(){
         projectArray = projectArray.sort((a,b) =>{
@@ -107,13 +154,12 @@ const projectDataBase = (function(){
         let description = projectDescription;
         
         if(!projectID){
-            projectID = projectIDcounter;
-            projectIDcounter ++;
+            projectID = projectIDCounter;
         }
         
 
         
-
+      
 
         const projectTodos = function(){
         return todoDataBase.projectIDFilter(projectID);
@@ -154,6 +200,13 @@ const projectDataBase = (function(){
     
     let projectArray = [];
 
+    const updateProjectIDCounter = function(){
+        projectIDCounter = projectArray.reduce(function(a,b){
+            return (a.projectID > b.projectID) ? a : b;
+        }).projectID + 1;
+    };
+
+
     const addProject = function(projectName, projectDesc, projectID = false){
         const project = projectFactory(projectName,projectDesc,projectID);
         projectArray.push(project);
@@ -162,7 +215,7 @@ const projectDataBase = (function(){
         if(project.projectID != 0){
             exportArray();
         }
-        
+        updateProjectIDCounter();
     };
 
     function importArray(){
@@ -176,7 +229,7 @@ const projectDataBase = (function(){
     }
 
     function exportArray(){
-        if(true){
+        if(storageAvailable('localStorage')){
             const projectExportArray = [];
         projectArray.forEach(project =>{
            const projectExportObject = {
@@ -207,30 +260,6 @@ const projectDataBase = (function(){
        exportArray: exportArray
    } ;
 })();
-
-
-
-// projectDataBase.addProject("Projekt1","Detta är projekt 1");
-// projectDataBase.addProject("Projekt2","Detta är projekt 2");
-
-
-// todoDataBase.addTodo("namn0",new Date("2002","02","15"),"beskrivning0",1);
-// todoDataBase.addTodo("namn1",new Date("2002","03","15"),"beskrivning1",2);
-// todoDataBase.addTodo("namn2",new Date("2002","04","15"),"beskrivning2",4);
-// todoDataBase.addTodo("namn3",new Date("2002","05","15"),"beskrivning3",3);
-// todoDataBase.addTodo("namn4",new Date("2002","08","15"),"beskrivning4",2);
-// todoDataBase.addTodo("namn5",new Date("2002","09","15"),"beskrivning5",3);
-// todoDataBase.addTodo("namn6",new Date("2022","02","15"),"beskrivning6",5);
-// todoDataBase.addTodo("namn7",new Date("2002","02","18"),"beskrivning9",6);
-
-// todoDataBase.assignProjectID(1,5);
-// todoDataBase.assignProjectID(1,2);
-// todoDataBase.assignProjectID(2,4);
-// todoDataBase.assignProjectID(2,4);
-
-// console.table(todoDataBase.todoArray);
-
-// console.table(projectDataBase.projectArray);
 
 userInterface(todoDataBase,projectDataBase);
 

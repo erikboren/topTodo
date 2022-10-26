@@ -239,8 +239,7 @@ export function userInterface(todoDataBase,projectDataBase){
                         return tableRow;
                 }
 
-                function todoTableAddRow(){ //Adds a "blank" row at the bottom with an "add task button"
-                    
+                function todoTableAddRow(projectID){ //Adds a "blank" row at the bottom with an "add task button"
                     const tableRow = document.createElement("tr");
 
                     for(var i = 0; i <4;i++){
@@ -255,7 +254,7 @@ export function userInterface(todoDataBase,projectDataBase){
                     addTodoButton.textContent = "Add task";
 
                     addTodoButton.onclick = function(){
-                        todoAddRowTransform();
+                        todoAddRowTransform(projectID);
                     };
                 
 
@@ -265,7 +264,7 @@ export function userInterface(todoDataBase,projectDataBase){
 
                     tableRow.appendChild(addTodoButtonTD);
 
-                    function todoAddRowTransform(){
+                    function todoAddRowTransform(projectID){
                         const nameCell = tableRow.childNodes[0];
                         const nameInput = document.createElement("input");
                         nameInput.setAttribute('type','text');
@@ -283,9 +282,8 @@ export function userInterface(todoDataBase,projectDataBase){
                         dateInput.setAttribute('type','date');
                         dateInput.value ='2022-10-25';
                         dateCell.appendChild(dateInput);
-                        console.log(dateInput.value);
                         addTodoButton.onclick = function(){
-                            todoDataBase.addTodo(nameInput.value,dateInput.valueAsNumber,'',priorityInput.value,project.ProjectID);
+                            todoDataBase.addTodo(nameInput.value, dateInput.valueAsNumber, 'Description', priorityInput.value, projectID);
                             showProjectTodos(project);};
                     }
 
@@ -322,7 +320,7 @@ export function userInterface(todoDataBase,projectDataBase){
                     todoTable.appendChild(todoTableRow(todo));
                 });
                     
-                    todoTable.appendChild(todoTableAddRow());
+                    todoTable.appendChild(todoTableAddRow(project.projectID));
 
 
                 mainWindowBox(todoTable);
@@ -456,7 +454,6 @@ export function userInterface(todoDataBase,projectDataBase){
                 submitButton.onclick = function(){
                     const newProjectName = document.getElementById("projectNameInput").value;
                     const newProjectDesc = document.getElementById("projectDescInput").value;
-                    console.log(newProjectName);
                     projectDataBase.addProject(newProjectName,newProjectDesc);
                     hideModal();
                     mainWindow.projectList();
