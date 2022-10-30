@@ -68,10 +68,12 @@ const todoDataBase = (function(){
         if(projectDataBase.projectArray.some(project => project.projectID == projectIDToAssign)){
             const todoToEdit = todoIDFilter(todoID);
             todoToEdit.projectID = projectIDToAssign;
+            exportArray();
         }
         else{
             console.log("ProjectID not found");
         }
+        
     };
 
     const editTodo = function(todoID,newTodoName,newTodoDate,newTodoDesc,newTodoProjectID,newTodoPriority){
@@ -92,6 +94,7 @@ const todoDataBase = (function(){
         } else {
             todoToEdit.completed = true;
         }
+        exportArray();
     };
 
     const importArray = function(){
