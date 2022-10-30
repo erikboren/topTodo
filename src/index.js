@@ -39,15 +39,15 @@ const todoDataBase = (function(){
 
     const addTodo = function(todoName,todoDate,todoDesc,todoPriority,projectID,todoID = false){
         const todo = todoFactory(todoName,todoDate,todoDesc,todoPriority, projectID, todoID);
-        updateTodoIDCounter();
         todoArray.push(todo);
+        updateTodoIDCounter();
         exportArray();
     };
 
     const updateTodoIDCounter = function(){
         if(todoArray.length>0){
             todoIDCounter = todoArray.reduce(function(a,b){
-                return (a.todoID < b.todoID) ? a : b;
+                return (a.todoID > b.todoID) ? a : b;
             }).todoID +1;
         }
         };
